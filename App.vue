@@ -1,0 +1,42 @@
+<template>
+  <div id="app">
+    <NewStudentForm v-on:student-added="newStudentAdded"></NewStudentForm>
+    <StudentTable v-bind:students="students" v-on:student-present="studentArrivedOrLeft"></StudentTable>
+    <StudentMessage v-bind:message="message" v-bind:name="name"> </StudentMessage>  </div>
+</template>
+
+<script>
+import NewStudentForm from "./components/NewStudentForm";
+import StudentTable from "./components/StudentTable";
+import StudentMessage from "./components/StudentMessage";
+
+export default {
+  name: 'app',
+  data() {
+    return {
+      students: []
+    }
+  },
+  components: {
+    NewStudentForm,
+    StudentTable,
+    StudentMessage,
+  },
+  methods: {
+    newStudentAdded(student) {
+      this.students.push(student)
+      this.students.sort(function(s1, s2) {
+        return s1.name.toLowerCase() < s2.name.toUpperCase() ? -1 : 1
+      })
+    },
+    studentArrivedOrLeft(student) {
+      this.message = student.present ? 'Welcome,' : 'Goodbye,'
+      this.name = student.name
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
